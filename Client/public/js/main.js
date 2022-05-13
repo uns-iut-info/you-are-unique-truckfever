@@ -545,7 +545,7 @@ function updateWall(newWall){
     if(listEnemis.includes(newPos.username)){
         console.log(newPos)
         let meshEnemy = scene.getMeshByName(newPos.username);
-        meshEnemy.move(newPos.x,newPos.y,newPos.z)
+        meshEnemy.move(newPos.x,newPos.y,newPos.z,newPos.orientation)
     }else if(username!=newPos.username){
          updatePlayers(newPos);
     }
