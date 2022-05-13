@@ -541,21 +541,21 @@ function updateWall(newWall){
 }
 
 // bouge un joueur ennemi
-function updatePlayerNewPos(newPos){
+ function updatePlayerNewPos(newPos){
     if(listEnemis[newPos.username]!=undefined){
         listEnemis[newPos.username].move(newPos.x,newPos.y,newPos.z)
     }else if(username!=newPos.username){
-        updatePlayers(newPos);
+         updatePlayers(newPos);
     }
 }
 
 // crée un tron (soit celui du joueur soit celui d'un ennemis)
-function updatePlayers(newPlayer){
+ function updatePlayers(newPlayer){
     if(newPlayer.username == username){
-        let tron = createTron(scene,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
+        tron =  createTron(scene,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
     }else{
         console.log("new ennemi : ",newPlayer)
-        let tron = scene.getMeshByName("tron");
+        tron = scene.getMeshByName("tron");
         resetTron(tron,true);
         listEnemis[newPlayer.username] = createEnemie(scene,newPlayer.username,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
     }

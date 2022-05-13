@@ -182,7 +182,7 @@ io.on('connection', (socket) => {
 function checkEveryoneReady(){
 	
 	if(playersReady>=nbPlayerConnected){
-		let timeStart = Date.now()+2000; 
+		let timeStart = Date.now()+3000; 
 		io.emit('starting',timeStart);
 		playerInGame = playersReady;
 		console.log('EVERYONE READY !');

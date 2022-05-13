@@ -1,14 +1,15 @@
 // crée le tron allié 
 function createTron(scene,x,y,z,orientation,color) {
-    BABYLON.SceneLoader.ImportMesh("", "/assets/models/truck/", "Pickup.glb", scene,  (newMeshes, particleSystems, skeletons) => {
+    BABYLON.SceneLoader.ImportMesh("", "/assets/models/truck/", "Spaceship.babylon", scene,  (newMeshes, particleSystems, skeletons) => {
+        console.log(newMeshes)
             let tron = newMeshes[0];
     //        let tron = BABYLON.MeshBuilder.CreateBox(username, { width:3, height:3, size : 3}, scene);
             let tronMaterial = new BABYLON.StandardMaterial("tronMaterial", scene);
-            tronMaterial.diffuseTexture = new BABYLON.Texture("/assets/models/Tron/Sphere_003_baked_EMIT.jpg");
-            tronMaterial.emissiveTexture = new BABYLON.Texture("/assets/models/Tron/Sphere_003_baked_EMIT.jpg");
+            //tronMaterial.diffuseTexture = new BABYLON.Texture("/assets/models/Tron/Sphere_003_baked_EMIT.jpg");
+            //tronMaterial.emissiveTexture = new BABYLON.Texture("/assets/models/Tron/Sphere_003_baked_EMIT.jpg");
             tronMaterial.emissiveColor = new BABYLON.Color3(colorList[color].r,colorList[color].g,colorList[color].b);
             if(displayEffects){
-                tronMaterial.glow = new BABYLON.GlowLayer("glow", scene, {blurKernelSize : 150});
+                tronMaterial.glow = new BABYLON.GlowLayer("glow", scene, {blurKernelSize : 50});
                 tronMaterial.glow.intensity = 1;
                 tronMaterial.glow.addIncludedOnlyMesh(tron);
             }
@@ -19,8 +20,10 @@ function createTron(scene,x,y,z,orientation,color) {
             tron.z = z;
             tron.base =  new BABYLON.Vector3(tron.x, tron.y, tron.z); 
             tron.baseRotationY = orientation;
-            tron.baseRotationZ = -1.5708;
+            tron.baseRotationZ = Math.PI;
+            tron.baseRotationX = Math.PI;
             tron.rotation.y = tron.baseRotationY;
+            tron.rotation.x = tron.baseRotationX;
             tron.speed = 0.05;
             tron.basedSpeed = 0.05;
             tron.frontVector = new BABYLON.Vector3(Math.sin(tron.baseRotationY), 0, Math.cos(tron.baseRotationY));
@@ -95,6 +98,7 @@ function createTron(scene,x,y,z,orientation,color) {
                         }else{
                             tron.jumping = false;
                             tron.position.y = 2
+                            tron.rotation.x = tron.baseRotationX
                         }if( timeElapsedDuringJump > 5000){
                             tron.jumpAvailable = true;
                             document.getElementById("JUMP").src = "/assets/images/JUMP_ENABLE.png";
@@ -186,20 +190,21 @@ function createTron(scene,x,y,z,orientation,color) {
                     // verifie si le joueur tourne gauche/droite
                     if(inputs.left) {
                         tron.rotation.y -= 0.02*deltaTime/10;
-                        if(tron.rotation.z + 0.02*deltaTime/10 < tron.baseRotationZ+0.8){
-                            tron.rotation.z += 0.02*deltaTime/10;
-                        }else{
-                            tron.rotation.z =tron.baseRotationZ+0.8
-                        }
-                        tron.frontVector = new BABYLON.Vector3(Math.sin(tron.rotation.y), 0, Math.cos(tron.rotation.y));
-                    }
-                    else if(inputs.right) { 
-                        tron.rotation.y += 0.02*deltaTime/10;
                         if(tron.rotation.z - 0.02*deltaTime/10 > tron.baseRotationZ-0.8){
                             tron.rotation.z -= 0.02*deltaTime/10;
                     }else{
                         tron.rotation.z =tron.baseRotationZ-0.8;
                     }
+                        
+                        tron.frontVector = new BABYLON.Vector3(Math.sin(tron.rotation.y), 0, Math.cos(tron.rotation.y));
+                    }
+                    else if(inputs.right) { 
+                        tron.rotation.y += 0.02*deltaTime/10;
+                        if(tron.rotation.z + 0.02*deltaTime/10 < tron.baseRotationZ+0.8){
+                            tron.rotation.z += 0.02*deltaTime/10;
+                        }else{
+                            tron.rotation.z =tron.baseRotationZ+0.8
+                        }
                         tron.frontVector = new BABYLON.Vector3(Math.sin(tron.rotation.y), 0, Math.cos(tron.rotation.y));
                     }else{
                         let diffRotation = tron.rotation.z-tron.baseRotationZ;

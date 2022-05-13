@@ -13,7 +13,6 @@ let chat = false;
 // on load of page
 //window.onload = init();
 
-
 function displayChat(){
   if(chat){
     document.getElementById("chatMessages").style.display = "none";
@@ -58,7 +57,7 @@ function getUsername(){
 function init() {
 
   // initialize socket.io client-side
-  socket = io.connect('https://tronfever-server.herokuapp.com', { transports: ['websocket'], upgrade:false });
+  socket = io.connect('http://localhost:8082', { transports: ['websocket'], upgrade:false });
   conversation = document.querySelector("#conversation");
   data = document.querySelector("#data");
   datasend = document.querySelector("#datasend");
@@ -100,7 +99,7 @@ function sendMessage() {
   // update the whole list of players, useful when a player
   // connects or disconnects, we must update the whole list
   socket.on("updatePlayers", (newPlayer) => {
-    updatePlayers(newPlayer);
+     updatePlayers(newPlayer);
   });
 
   // un mur est a construire
@@ -129,8 +128,8 @@ function sendMessage() {
   });
 
   // update la position d'un joueur
-  socket.on("updatePos", (newPos) => {
-    updatePlayerNewPos(newPos);
+  socket.on("updatePos",  (newPos) => {
+     updatePlayerNewPos(newPos);
     //console.log(newPos);
   });
 
