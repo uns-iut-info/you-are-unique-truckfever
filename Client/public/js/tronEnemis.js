@@ -1,9 +1,10 @@
 // méthode de création d'un tron enemie, malheuresement n'ayant pas réussis à implémenter l'assetManager 
 // les enemies seront temporairement des cubes, le temps de l'implémentation 
 function createEnemie(scene,username,x,y,z,orientation,color) {
-    //BABYLON.SceneLoader.ImportMesh("", "models/Tron/", "Tron_Motorcycle.babylon", scene,  (newMeshes, particleSystems, skeletons) => {
-    //        let tron = newMeshes[0];
-            let tron = BABYLON.Mesh.CreateSphere(username, 16, 5, scene);
+    BABYLON.SceneLoader.ImportMesh("", "/assets/models/truck/", "Spaceship.babylon", scene,  (newMeshes, particleSystems, skeletons) => {
+            console.log(newMeshes)
+            let tron = newMeshes[0];
+            tron.name = username
             let tronMaterial = new BABYLON.StandardMaterial(username+"Material", scene);
             //tronMaterial.diffuseTexture = new BABYLON.Texture("models/Tron/Sphere_003_baked_EMIT.jpg");
             //tronMaterial.emissiveTexture = new BABYLON.Texture("models/Tron/Sphere_003_baked_EMIT.jpg");
@@ -35,5 +36,5 @@ function createEnemie(scene,username,x,y,z,orientation,color) {
             }
             console.log("creation du tron enemis " , username)
             return tron;
-    //  });
+    });
 }

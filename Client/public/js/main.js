@@ -542,8 +542,10 @@ function updateWall(newWall){
 
 // bouge un joueur ennemi
  function updatePlayerNewPos(newPos){
-    if(listEnemis[newPos.username]!=undefined){
-        listEnemis[newPos.username].move(newPos.x,newPos.y,newPos.z)
+    if(listEnemis.includes(newPos.username)){
+        console.log(newPos)
+        let meshEnemy = scene.getMeshByName(newPos.username);
+        meshEnemy.move(newPos.x,newPos.y,newPos.z)
     }else if(username!=newPos.username){
          updatePlayers(newPos);
     }
@@ -557,7 +559,8 @@ function updateWall(newWall){
         console.log("new ennemi : ",newPlayer)
         tron = scene.getMeshByName("tron");
         resetTron(tron,true);
-        listEnemis[newPlayer.username] = createEnemie(scene,newPlayer.username,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
+        createEnemie(scene,newPlayer.username,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
+        listEnemis.push(newPlayer.username)
     }
 }
 

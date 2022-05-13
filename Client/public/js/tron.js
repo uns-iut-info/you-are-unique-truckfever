@@ -219,7 +219,7 @@ function createTron(scene,x,y,z,orientation,color) {
                 
                 }
                 // envoie au serveur la position 
-                let data = {'username':username,'x' : tron.position.x, 'y' : tron.position.y , 'z' : tron.position.z, 'orientation' : tron.baseRotationY}
+                let data = {'username':username,'x' : tron.position.x, 'y' : tron.position.y , 'z' : tron.position.z, 'orientation' : tron.baseRotationY,"color":tron.color}
                 send("sendpos",data);
             }
             // si le client à choisit d'afficher les particules
