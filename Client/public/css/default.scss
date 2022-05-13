@@ -89,10 +89,9 @@ html, body {
 
 
 #MSG{
-    top:20%;
-    right: 2%;
+    top:180px;
+    right: 23px;
     position: fixed;
-    width: 3%;
 }
 #COOLDOWN{
     position: fixed;
@@ -355,7 +354,40 @@ border-radius: 30px;
   background-color: var(--active-bg);
   background-position: calc(var(--size) / 1.75) 0;
 }
-
+.btnMSG{
+  background: rgba(196, 196, 196, 0.08);
+  border-radius: 13px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 80px;
+  border: none;
+  color: white;
+}
+.btnMSG:hover{
+  color:#ffffff;
+  background-color:rgba(196, 196, 196, 0.466);
+}
 .spann{
   float:left;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px black; 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: white; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    
+  }
