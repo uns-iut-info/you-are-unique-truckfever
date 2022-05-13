@@ -24,8 +24,9 @@ function createTron(scene,x,y,z,orientation,color) {
             tron.baseRotationX = Math.PI;
             tron.rotation.y = tron.baseRotationY;
             tron.rotation.x = tron.baseRotationX;
-            tron.speed = 0.05;
-            tron.basedSpeed = 0.05;
+            tron.basedSpeed = 0.025;
+            tron.speed = tron.basedSpeed;
+            
             tron.frontVector = new BABYLON.Vector3(Math.sin(tron.baseRotationY), 0, Math.cos(tron.baseRotationY));
             tron.checkCollisions = false;
             tron.bonus = 0;
@@ -286,8 +287,7 @@ function resetTron(tron,reseting){
     tron.position = new BABYLON.Vector3(tron.x, tron.y, tron.z);
     tron.rotation.y = tron.baseRotationY
     tron.rotation.z = tron.baseRotationZ
-    tron.speed = 0.05;
-    tron.basedSpeed = 0.05;
+    tron.speed = tron.basedSpeed;
     tron.frontVector = new BABYLON.Vector3(Math.sin(tron.baseRotationY), 0, Math.cos(tron.baseRotationY));
 
     tron.loose = true ;

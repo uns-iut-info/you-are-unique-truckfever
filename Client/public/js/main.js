@@ -161,7 +161,7 @@ function startGame() {
                 if(displayPlanets){moveAllPlanet(alpha);}
                     alpha += 0.001;
                 // CREER UN MUR AU MOINS TOUTE LES 300ms
-                if(currentDate-lastDateWall > 300){
+                if(currentDate-lastDateWall > 600){
                     tron.wall(scene,inputStates);
                     lastDateWall=currentDate;
                     printFPS(deltaTime);            
