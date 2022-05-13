@@ -23,8 +23,10 @@ function createEnemie(scene,username,x,y,z,orientation,color) {
             tron.z = z;
             tron.base =  new BABYLON.Vector3(tron.x, tron.y, tron.z); 
             tron.baseRotationY = orientation;
-            tron.baseRotationZ = -1.5708;
+            tron.baseRotationZ = Math.PI;
+            tron.baseRotationX = Math.PI;
             tron.rotation.y = tron.baseRotationY;
+            tron.rotation.x = tron.baseRotationX;
             tron.frontVector = new BABYLON.Vector3(0, 0, 0);
             tron.checkCollisions = false;
             tron.position = new BABYLON.Vector3(tron.x,tron.y,tron.z);
