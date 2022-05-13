@@ -152,7 +152,11 @@ function startGame() {
                     missiles.move(deltaTime);
                 }
                 // MOUVEMENT TRON
-                tron.move(deltaTime,inputStates,walls,bonus);    
+                tron.move(deltaTime,inputStates,walls,bonus); 
+                listEnemis.forEach((user) => {
+                    let meshEnemy = scene.getMeshByName(user);
+                    meshEnemy.move2(deltaTime)
+                })
                 // MOUVEMENT CURSEUR   
                 moveCursor(tron);
 

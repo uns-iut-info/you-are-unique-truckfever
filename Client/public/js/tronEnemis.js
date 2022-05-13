@@ -18,6 +18,7 @@ function createEnemie(scene,username,x,y,z,orientation,color) {
 
             tron.material = tronMaterial;
             tron.color = color;
+            tron.speed = 0.025;
             tron.x = x;
             tron.y = y;
             tron.z = z;
@@ -35,7 +36,12 @@ function createEnemie(scene,username,x,y,z,orientation,color) {
             
             tron.move = (x,y,z,orientation) => {
                 tron.position = new BABYLON.Vector3(x,y,z);
+                tron.frontVector = orientation
                 tron.rotation.y = orientation
+
+            }
+            tron.move2 = (deltaTime) => {
+                tron.moveWithCollisions(tron.frontVector.multiplyByFloats(tron.speed*deltaTime, tron.speed*deltaTime, tron.speed*deltaTime));
 
             }
             console.log("creation du tron enemis " , username)
