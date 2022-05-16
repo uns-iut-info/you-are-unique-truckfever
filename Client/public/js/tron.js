@@ -1,7 +1,7 @@
 // crée le tron allié 
 function createTron(scene,x,y,z,orientation,color) {
     BABYLON.SceneLoader.ImportMesh("", "/assets/models/truck/", "Spaceship.babylon", scene,  (newMeshes, particleSystems, skeletons) => {
-        console.log(newMeshes)
+        //console.log(newMeshes)
             let tron = newMeshes[0];
     //        let tron = BABYLON.MeshBuilder.CreateBox(username, { width:3, height:3, size : 3}, scene);
             let tronMaterial = new BABYLON.StandardMaterial("tronMaterial", scene);

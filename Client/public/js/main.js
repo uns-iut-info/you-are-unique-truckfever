@@ -19,7 +19,7 @@ let tron;
 let listEnemis = [];
 let listUsernameEnemis = [];
 let currentDate;
-let acc = 0;
+let accu = 0;
 let followCamera ;
 let nbEnnemis = 0;
 let answeredReady = false;
@@ -42,13 +42,13 @@ inputStates.escape = false;
 
 
 function LEFTClick(){
-    acc--;
-    tronDead(acc)
+    accu--;
+    tronDead()
 }
 
 function RIGHTClick(){
-    acc++;
-    tronDead(acc)
+    accu++;
+    tronDead()
 }
 
 
@@ -115,8 +115,9 @@ function startGame() {
                     followCamera = createFollowCamera(scene, tron);
                     let cameraMap = createCameraMap(scene);
                     scene.activeCamera = followCamera;
-                    scene.activeCameras.push(followCamera);
                     scene.activeCameras.push(cameraMap);
+                    scene.activeCameras.push(followCamera);
+                    
                     cameraMap.layerMask = 1;
                     followCamera.layerMask = 2;
                     cameraset = true;
@@ -178,10 +179,14 @@ function startGame() {
     });
 }
 
-function tronDead(accu){
-
+function tronDead(){
+    console.log(listEnemis[(accu)%listEnemis.length], listEnemis , accu )
     let enemi = scene.getMeshByName(listEnemis[(accu)%listEnemis.length]);
-    followCamera = createFollowCamera(scene,enemi );
+    let newfollowCamera =  createFollowCamera(scene,enemi );
+    console.log(scene.activeCameras)
+    scene.activeCameras.splice(1,1,newfollowCamera);
+    newfollowCamera.layerMask = 2;
+     
 }
 // AFFICHE LA PAGE READY 
 function askReady(){
@@ -205,6 +210,15 @@ function ready(){
     document.getElementById("GAME").style.display = "none";
     document.getElementById("left").style.display = "none";
     document.getElementById("right").style.display = "none";
+    let tron = scene.getMeshByName("tron");
+    let newfollowCamera =  createFollowCamera(scene,tron );
+        console.log(scene.activeCameras)
+        newfollowCamera.layerMask = 2;
+        try {
+            scene.activeCameras.splice(1,1,newfollowCamera);
+        } catch (error) {
+            
+        }
 }
 
 // CHECK LES BONUS 
@@ -547,7 +561,7 @@ function updateWall(newWall){
 // bouge un joueur ennemi
  function updatePlayerNewPos(newPos){
     if(listEnemis.includes(newPos.username)){
-        console.log(newPos)
+        //console.log(newPos)
         let meshEnemy = scene.getMeshByName(newPos.username);
         meshEnemy.move(newPos.x,newPos.y,newPos.z,newPos.orientation)
     }else if(username!=newPos.username){
@@ -560,10 +574,11 @@ function updateWall(newWall){
     if(newPlayer.username == username){
         tron =  createTron(scene,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
     }else{
-        console.log("new ennemi : ",newPlayer)
+        //console.log("new ennemi : ",newPlayer)
         tron = scene.getMeshByName("tron");
         resetTron(tron,true);
-        followCamera = createFollowCamera(scene, tron);
+        
+
         createEnemie(scene,newPlayer.username,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
         listEnemis.push(newPlayer.username)
     }

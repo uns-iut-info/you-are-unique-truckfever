@@ -2,7 +2,7 @@
 // les enemies seront temporairement des cubes, le temps de l'implémentation 
 function createEnemie(scene,username,x,y,z,orientation,color) {
     BABYLON.SceneLoader.ImportMesh("", "/assets/models/truck/", "Spaceship.babylon", scene,  (newMeshes, particleSystems, skeletons) => {
-            console.log(newMeshes)
+            //console.log(newMeshes)
             let tron = newMeshes[0];
             tron.name = username
             let tronMaterial = new BABYLON.StandardMaterial(username+"Material", scene);
@@ -28,6 +28,7 @@ function createEnemie(scene,username,x,y,z,orientation,color) {
             tron.baseRotationX = Math.PI;
             tron.rotation.y = tron.baseRotationY;
             tron.rotation.x = tron.baseRotationX;
+            tron.rotation.z = tron.baseRotationZ;
             tron.frontVector = new BABYLON.Vector3(0, 0, 0);
             tron.checkCollisions = false;
             tron.position = new BABYLON.Vector3(tron.x,tron.y,tron.z);
@@ -44,7 +45,7 @@ function createEnemie(scene,username,x,y,z,orientation,color) {
                 tron.moveWithCollisions(tron.frontVector.multiplyByFloats(tron.speed*deltaTime, tron.speed*deltaTime, tron.speed*deltaTime));
 
             }
-            console.log("creation du tron enemis " , username)
+            //console.log("creation du tron enemis " , username)
             return tron;
     });
 }

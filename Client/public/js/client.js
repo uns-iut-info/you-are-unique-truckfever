@@ -46,7 +46,7 @@ function getUsername(){
   displayTransparency = document.getElementById("transparency").checked;
   displayEffects = document.getElementById("effects").checked;
   displayParticles = document.getElementById("particles").checked;
-  console.log(displayPlanets,displayStars,displayTransparency,displayEffects)
+  //console.log(displayPlanets,displayStars,displayTransparency,displayEffects)
   if(username==""){
     alert("Veuillez entrer un pseudo :) !");
   }else{
