@@ -182,7 +182,7 @@ function createTron(scene,x,y,z,orientation,color) {
                         if(walls[i]!=undefined){
                             if(tron.intersectsMesh(walls[i],true)){
                                 console.log("COLLAPSE" , i);
-                                stopTron(tron)
+                                stopTron(tron);
                                 break;
                             }
                         }
@@ -326,6 +326,7 @@ function stopTron(tron){
         tron.loose = true;
         tron.inGame = false ;
         tron.position = new BABYLON.Vector3(0,50,0);
+        tronDead();
         tron.speed = 0 ;
     }
 }
@@ -357,6 +358,8 @@ function printHBonus(highBonus){
     let highBonushtml = document.querySelector("#HB");
     highBonushtml.innerHTML = highBonus;
 }
+
+
 
 // crée l'animation lorsque le joueur avance
 // grandement inspiré d'un playground mais énormément modifié aussi : 

@@ -19,6 +19,8 @@ let tron;
 let listEnemis = [];
 let listUsernameEnemis = [];
 let currentDate;
+let acc = 0;
+let followCamera ;
 let nbEnnemis = 0;
 let answeredReady = false;
 let timeToStart =Date.now()+2000;
@@ -40,28 +42,22 @@ inputStates.escape = false;
 
 
 function LEFTClick(){
-    if(mobile){
-        inputStates.left = true;
-    }
+    acc--;
+    tronDead(acc)
 }
 
 function RIGHTClick(){
-    if(mobile){
-        inputStates.right = true;
-    }
+    acc++;
+    tronDead(acc)
 }
 
 
 function LEFTStop(){
-    if(mobile){
-        inputStates.left = false;
-    }
+ 
 }
 
 function RIGHTStop(){
-    if(mobile){
-        inputStates.right = false;
-    }
+
 }
 
 function FireClick(){
@@ -116,7 +112,7 @@ function startGame() {
 
                 // SI LA CAMERA N'EST PAS ENCORE CONFIGUREE
                 if(!cameraset){
-                    let followCamera = createFollowCamera(scene, tron);
+                    followCamera = createFollowCamera(scene, tron);
                     let cameraMap = createCameraMap(scene);
                     scene.activeCamera = followCamera;
                     scene.activeCameras.push(followCamera);
@@ -182,6 +178,11 @@ function startGame() {
     });
 }
 
+function tronDead(accu){
+
+    let enemi = scene.getMeshByName(listEnemis[(accu)%listEnemis.length]);
+    followCamera = createFollowCamera(scene,enemi );
+}
 // AFFICHE LA PAGE READY 
 function askReady(){
     document.getElementById("HOME").style.display = "none";
@@ -431,7 +432,6 @@ function createCameraMap(scene) {
 // crée la follow camera qui suivra le joueur 
 function createFollowCamera(scene, target) {
     let camera = new BABYLON.FollowCamera("tronFollowCamera", target.position, scene, target);
-
     camera.radius = 30; // how far from the object to follow
 	camera.heightOffset = 10; // how high above the object to place the camera
 	camera.rotationOffset = 180; // the viewing angle
@@ -563,6 +563,7 @@ function updateWall(newWall){
         console.log("new ennemi : ",newPlayer)
         tron = scene.getMeshByName("tron");
         resetTron(tron,true);
+        followCamera = createFollowCamera(scene, tron);
         createEnemie(scene,newPlayer.username,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
         listEnemis.push(newPlayer.username)
     }
@@ -622,6 +623,6 @@ function starting(start){
 // supprime un enemis si il se déconnecte
 function deleteTron(name){
     let enemis = scene.getMeshByName(name);
-    //enemis.dispose();
+    enemis.dispose();
     delete listEnemis[name];
 }
