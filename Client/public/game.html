@@ -1,6 +1,6 @@
 <html>
     <head>
-    <title>StarFever</title>
+    <title>TronFever</title>
     <meta charset="UTF-8">
         <link rel="stylesheet" href="/css/default.scss">
         <script src="/lib/babylon.max.js"></script>
@@ -95,6 +95,12 @@
             
         </div>
 
+        <!-- Bouton Home, setting, FullScreen -->
+        <a href="/"><div class="buttonParam" id="buttonHome"></div></a>
+        <div class="buttonParam" id="buttonSettings"></div>
+        <div class="buttonParam" id="buttonFullscreen"></div>
+
+        <!-- Chat -->
         <div id="chatMessages" display="none">
             <div id="conversation"></div>
             <input id="data" />
@@ -106,10 +112,31 @@
         </div>
         <button id="MSG" class="btnMSG" onclick="displayChat()">CHAT</button>
 
-
-        <div class="buttonParam" id="buttonHome"></div>
-        <div class="buttonParam" id="buttonSettings"></div>
-        <div class="buttonParam" id="buttonFullscreen"></div>
+        <!-- Settings -->
+        <div role="dialog" id="settingsPanel">
+            <div style="left: 3%; position: absolute; font-family: Impact, fantasy; color: #158EC6;"><h1>PARAM&EgraveTRES</h1></div>
+            <div class="buttonParam" id="closeButtonSettings"></div>
+            <div id="bodyPanelSettings">
+                <button class="buttonSettingsPanel" id="buttonControle" style="color: #158EC6;" type="button" role="tab" aria-selected="true">Contrôles</button>
+                <button class="buttonSettingsPanel" id="buttonOption" style="float: right;" type="button" role="tab" aria-selected="false">Options</button>
+                <div id="buttonSelected"></div>
+                <div id="divControle" style="margin: 3% 4% 1% 4%; font-size: large; font-family: Arial; color: #E9E4C6;">
+                    <table style="width: 100%;">
+                        <tr><td>Tourner à droite</td><td><img src="/assets/images/touches/touche_droite.png" width="50px"></td></tr>
+                        <tr><td>Tourner à gauche</td><td><img src="/assets/images/touches/touche_gauche.png" width="50px"></td></tr>
+                        <tr><td>Ralentir</td><td><img src="/assets/images/touches/touche_bas.png" width="50px"></td></tr>
+                        <tr><td>Tirer</td><td><img src="/assets/images/touches/touche_haut.png" width="50px"></td></tr>
+                        <tr><td>Sauter</td><td><img src="/assets/images/touches/touche_espace.png" width="50px"></td></tr>
+                    </table>
+                </div>
+                <div id="divOption" style="margin: 3% 4% 1% 4%; font-size: large; font-family: Arial; color: #E9E4C6; display: none;">
+                    Sensibilité Verticale : <span id="valueSensibiliteX">50</span> %<br><input id="sensibiliteX" type="range" min="1" max="100" value="50" oninput="updateValue(valueSensibiliteX.id, this.value)" style="width: 100%;"><br><br>
+                    Sensibilité Horizontale : <span id="valueSensibiliteY">50</span> %<br><input id="sensibiliteY" type="range" min="1" max="100" value="50" oninput="updateValue(valueSensibiliteY.id, this.value)" style="width: 100%;"><br><br>
+                    Volume : <span id="valueVolume">50</span> %<br><input id="volume" type="range" min="0" max="100" value="50" oninput="updateValue(valueVolume.id, this.value)" style="width: 100%;"><br><br>
+                    Luminosité : <span id="valueLuminosite">50</span> %<br><input id="luminosite" type="range" min="1" max ="100" value="50" oninput="updateValue(valueLuminosite.id, this.value)" style="width: 100%;"><br><br>
+                </div>
+            </div>
+        </div>
             
         
         <img id="left" src="/assets/images/left.png" onmousedown="LEFTClick()" onmouseup="LEFTStop()">
