@@ -39,6 +39,40 @@ $("#buttonFullscreen").on("click", () => {
 });
 
 
+
+// Bouton pour ouvrir les paramètres
+$("#buttonSettings").on("click", () => {
+  if ($("#settingsPanel").css('display') == 'none') {
+    $("#settingsPanel").css('display', 'block');
+  }
+  else {
+    $("#settingsPanel").css('display', 'none');
+  }
+});
+
+// Bouton pour fermer les paramètres
+$("#closeButtonSettings").on("click", () => {
+  $("#settingsPanel").css('display', 'none');
+});
+$("#buttonControle").on("click", () => {
+  $("#buttonControle").css('color', '#158EC6');
+  $("#buttonOption").css('color', '#E9E4C6');
+  $("#buttonSelected").css('float', 'none');
+  $("#divControle").css('display', 'block');
+  $("#divOption").css('display', 'none');
+});
+$("#buttonOption").on("click", () => { 
+  $("#buttonControle").css('color', '#E9E4C6');
+  $("#buttonSelected").css('float', 'right');
+  $("#buttonOption").css('color', '#158EC6');
+  $("#divControle").css('display', 'none');
+  $("#divOption").css('display', 'block');
+});
+
+
+
+
+
 function getUsername(){
   username = document.getElementById("username").value;
   mobile = document.getElementById("mobile").checked;
