@@ -1,6 +1,6 @@
 function refreshLobbyCounter(){
     var settings = {
-        "url": "http://localhost:8082/getplayers",
+        "url": "https://server-star-fever.herokuapp.com/getplayers",
         "method": "GET",
         "timeout": 0,
     };
