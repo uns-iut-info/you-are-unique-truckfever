@@ -1,0 +1,128 @@
+<html>
+    <head>
+    <title>StarFever</title>
+    <meta charset="UTF-8">
+        <link rel="stylesheet" href="/css/default.scss">
+        <script src="/lib/babylon.max.js"></script>
+        <script src="/lib/jquery.min.js"></script>
+        <script src="https://server-star-fever.herokuapp.com/socket.io/socket.io.js"></script>
+        <script src="http://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script>
+        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    </head>
+    <body>
+
+
+
+        <div id="HOME">
+            <div class="containerHOME">
+                <input class="input" type="text" id="username" name="name" placeholder="PSEUDO" required size="10">
+                <button class="button1" onclick="getUsername()">PLAY</button>
+                <div id="Settings1">
+                    <label class="container">  MOBILE 
+                        <input type="checkbox" class="checkboxBouton" checked="NaN" id="mobile">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">  PLANETES
+                        <input type="checkbox"class="checkboxBouton"  checked="checked" id="planets">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">  ETOILES
+                        <input type="checkbox"class="checkboxBouton"  checked="checked" id="stars">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div id="Settings2">
+                    
+                    <label class="container">  TRANSPARENCE 
+                        <input type="checkbox"class="checkboxBouton"  checked="checked" id="transparency">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">  EFFETS
+                        <input type="checkbox"class="checkboxBouton"  checked="checked" id="effects">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">  PARTICULES
+                        <input type="checkbox"class="checkboxBouton"  checked="checked" id="particles">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="LOADING">
+            <div id='boxIndication'>
+            <div id='indication'>CHARGEMENT DU JEU</div>
+            </div>
+        </div>
+
+        
+
+        <div id="READY">
+            <div id='boxIndication'>
+                <div id="indication">ES-TU PRET ?</div>
+                
+            
+            <button class="button1" onclick="ready()">PRET</button>
+        </div> 
+        </div>
+
+        <div id="WAITING">
+            <div id='boxIndication'><div id='indication'>EN ATTENTE DES AUTRES JOUEURS</div></div>
+        </div>
+
+        <div id="GAME">
+            <img src="/assets/images/loading.gif" id="backgroundIMG">
+            <canvas id="myCanvas"></canvas>            
+            <div class="myGame">
+                <div id="infoText">
+                    <p>FPS : <span id="FPS"> NaN</span> /s</p>
+                    <p>SCORE : <span id="SCORE">NaN</span> seconds</p>
+                    <p>MEILLEUR SCORE : <span id="HS">NaN</span> seconds</p>
+                    <p>BONUS : <span id="BONUS">0</span></p>
+                    <p>PLUS HAUT BONUS : <span id="HB">0</span></p>
+                    <img src="/assets/images/JUMP_DISABLE.png" id="JUMP" width="5%"  onmousedown="JumpClick()" onmouseup="JumpStop()">
+                    <img src="/assets/images/BRAKE_DISABLE.png" id="BRAKE" width="5%"  onmousedown="BrakeClick()" onmouseup="BrakeStop()">
+                    <img src="/assets/images/FIRE_DISABLE.png" id="FIRE" width="5%" onmousedown="FireClick()" onmouseup="FireStop()">
+                </div>    
+                
+            </div>
+            <div id="TIMEOUT">
+                <div id="FILTRE"></div>
+                <div id='indication'>LA PARTIE COMMENCE DANS</div>
+                <span id="COOLDOWN">NaN</span>
+            </div>
+            
+            
+        </div>
+
+        <div id="chatMessages" display="none">
+            <div id="conversation"></div>
+            <input id="data" />
+            <input type="button" id="datasend" value="send" />
+        </div>
+        <div id="userList">
+            <b>COPAINS</b>
+            <div id="users"></div>
+        </div>
+        <button id="MSG" class="btnMSG" onclick="displayChat()">CHAT</button>
+
+
+        <div class="buttonParam" id="buttonHome"></div>
+        <div class="buttonParam" id="buttonSettings"></div>
+        <div class="buttonParam" id="buttonFullscreen"></div>
+            
+        
+        <img id="left" src="/assets/images/left.png" onmousedown="LEFTClick()" onmouseup="LEFTStop()">
+        
+        <img id="right" src="/assets/images/right.png" onmousedown="RIGHTClick()" onmouseup="RIGHTStop()">
+
+
+
+        <script src="/js/main.js"></script>
+        <script src="/js/client.js"></script>
+        <script src="/js/tronEnemis.js"></script>
+        <script src="/js/map.js"></script>
+        <script src="/js/tron.js"></script>
+
+    </body>
+</html>

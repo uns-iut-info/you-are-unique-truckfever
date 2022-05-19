@@ -180,12 +180,16 @@ function startGame() {
 }
 
 function tronDead(){
-    console.log(listEnemis[(accu)%listEnemis.length], listEnemis , accu )
-    let enemi = scene.getMeshByName(listEnemis[(accu)%listEnemis.length]);
-    let newfollowCamera =  createFollowCamera(scene,enemi );
-    console.log(scene.activeCameras)
-    scene.activeCameras.splice(1,1,newfollowCamera);
-    newfollowCamera.layerMask = 2;
+    
+    if(listEnemis.length>0){
+        console.log(listEnemis[(accu)%listEnemis.length], listEnemis , accu )
+        let enemi = scene.getMeshByName(listEnemis[(accu)%listEnemis.length]);
+        let newfollowCamera =  createFollowCamera(scene,enemi);
+        console.log(scene.activeCameras)
+        scene.activeCameras.splice(1,1,newfollowCamera);
+        newfollowCamera.layerMask = 2;
+    }
+    
      
 }
 // AFFICHE LA PAGE READY 

@@ -58,7 +58,7 @@ function getUsername(){
 function init() {
 
   // initialize socket.io client-side
-  socket = io.connect('https://server-star-fever.herokuapp.com/', { transports: ['websocket'], upgrade:false });
+  socket = io.connect('http://localhost:8082/lobby2', { transports: ['websocket'], upgrade:false });
   conversation = document.querySelector("#conversation");
   data = document.querySelector("#data");
   datasend = document.querySelector("#datasend");

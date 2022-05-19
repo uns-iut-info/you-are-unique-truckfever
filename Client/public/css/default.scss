@@ -132,8 +132,54 @@ html, body {
     width: 100%;
     background-color: transparent;
 }
+.titleHOME{
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    margin-top: 100px;
+    margin-bottom: -100px;
+  }
+.lobbyCell{
+  background: rgba(196, 196, 196, 0.08);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+  width: 500px ;
+  margin-left: 50px;
+  height: 80px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.lobbyName{
+  float: left;
+  padding: 30px;
+}
+.lobbyCounter{
+  float: left;
+  padding: 30px;
+}
+.Join{
+  margin-top: 13px;
+  float: right;
+  padding: 20px;
+  margin-right: 13px;
+}
+.boutonRefreshList{
+  padding: 20px;
+  //width: 60px;
+  margin-left: 240px;
+  margin-top: 50px;
+}
+button{
+  border : none;
 
-
+  color:#ffffff;
+  background: rgba(196, 196, 196, 0.08);
+  border-radius: 13px;
+}
+button:hover{
+  color:#ffffff;
+    background-color:rgba(196, 196, 196, 0.466);
+}
 .button1{
     border : none;
     /* Note: backdrop-filter has minimal browser support */
