@@ -92,7 +92,10 @@ function getUsername(){
 function init() {
 
   // initialize socket.io client-side
-  socket = io.connect('http://localhost:8082/lobby2', { transports: ['websocket'], upgrade:false });
+  const search = window.location.search; // returns the URL query String
+  const params = new URLSearchParams(search);
+  let lobby = params.get('lobby'); 
+  socket = io.connect('https://server-star-fever.herokuapp.com/lobby'+lobby, { transports: ['websocket'], upgrade:false });
   conversation = document.querySelector("#conversation");
   data = document.querySelector("#data");
   datasend = document.querySelector("#datasend");
