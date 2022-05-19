@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
         <link rel="stylesheet" href="/css/default.scss">
         <script src="/lib/babylon.max.js"></script>
-        <script src="/js/main.js"></script>
-        <script src="/js/client.js"></script>
-        <script src="/js/tronEnemis.js"></script>
-        <script src="/js/map.js"></script>
-        <script src="/js/tron.js"></script>
+        <script src="/lib/jquery.min.js"></script>
         <script src="https://server-star-fever.herokuapp.com/socket.io/socket.io.js"></script>
-        <script src="http://code.jquery.com/jquery.min.js"></script>
         <script src="http://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script>
         <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
     </head>
@@ -110,13 +105,24 @@
             <div id="users"></div>
         </div>
         <button id="MSG" class="btnMSG" onclick="displayChat()">CHAT</button>
-            
 
-        <img id="fullscreen" src="/assets/images/fullscreen.png" onclick="fullscreen()">
+
+        <div class="buttonParam" id="buttonHome"></div>
+        <div class="buttonParam" id="buttonSettings"></div>
+        <div class="buttonParam" id="buttonFullscreen"></div>
+            
         
         <img id="left" src="/assets/images/left.png" onmousedown="LEFTClick()" onmouseup="LEFTStop()">
         
         <img id="right" src="/assets/images/right.png" onmousedown="RIGHTClick()" onmouseup="RIGHTStop()">
+
+
+
+        <script src="/js/main.js"></script>
+        <script src="/js/client.js"></script>
+        <script src="/js/tronEnemis.js"></script>
+        <script src="/js/map.js"></script>
+        <script src="/js/tron.js"></script>
 
     </body>
 </html>

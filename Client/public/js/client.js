@@ -23,19 +23,20 @@ function displayChat(){
   }
 }
 
-function fullscreen(){
+
+// Listener Fullscreen
+$("#buttonFullscreen").on("click", () => {
+  console.log("la");
   if(!fullScreen){
     document.body.requestFullscreen();
     fullScreen = true
-    document.getElementById("fullscreen").style.display = "none";
-    document.getElementById("unfullscreen").style.display = "block";
+    $("#buttonFullscreen").attr("id", "buttonMinimisedscreen");
   }else{
     document.exitFullscreen();
     fullScreen = false;
-    document.getElementById("fullscreen").style.display = "block";
-    document.getElementById("unfullscreen").style.display = "none";
+    $("#buttonMinimisedscreen").attr("id", "buttonFullscreen");
   }
-}
+});
 
 
 function getUsername(){
