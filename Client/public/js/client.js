@@ -73,7 +73,6 @@ function updateValue(id, value) {
   document.getElementById(id).innerHTML = value;
 }
 
-
 window.onload = ()=>{
   init();
 }
