@@ -120,7 +120,7 @@
                 <button class="buttonSettingsPanel" id="buttonControle" style="color: #A3ACB7;" type="button" role="tab" aria-selected="true">Contrôles</button>
                 <button class="buttonSettingsPanel" id="buttonOption" style="float: right;" type="button" role="tab" aria-selected="false">Options</button>
                 <div id="buttonSelected"></div>
-                <div id="divControle" style="margin: 3% 4% 1% 4%; font-size: large; font-family: Arial; color: #E9E4C6;">
+                <div id="divControle" style="margin: 3% 4% 1% 4%; font-size: large; font-family: Arial;">
                     <table style="width: 100%;">
                         <tr><td>Tourner à droite</td><td><img src="/assets/images/touches/touche_droite.png" width="50px"></td></tr>
                         <tr><td>Tourner à gauche</td><td><img src="/assets/images/touches/touche_gauche.png" width="50px"></td></tr>
@@ -129,11 +129,8 @@
                         <tr><td>Sauter</td><td><img src="/assets/images/touches/touche_espace.png" width="50px"></td></tr>
                     </table>
                 </div>
-                <div id="divOption" style="margin: 3% 4% 1% 4%; font-size: large; font-family: Arial; color: #E9E4C6; display: none;">
-                    Sensibilité Verticale : <span id="valueSensibiliteX">50</span> %<br><input id="sensibiliteX" type="range" min="1" max="100" value="50" oninput="updateValue(valueSensibiliteX.id, this.value)" style="width: 100%;"><br><br>
-                    Sensibilité Horizontale : <span id="valueSensibiliteY">50</span> %<br><input id="sensibiliteY" type="range" min="1" max="100" value="50" oninput="updateValue(valueSensibiliteY.id, this.value)" style="width: 100%;"><br><br>
+                <div id="divOption" style="margin: 3% 4% 1% 4%; font-size: large; font-family: Arial; display: none;">
                     Volume : <span id="valueVolume">50</span> %<br><input id="volume" type="range" min="0" max="100" value="50" oninput="updateValue(valueVolume.id, this.value)" style="width: 100%;"><br><br>
-                    Luminosité : <span id="valueLuminosite">50</span> %<br><input id="luminosite" type="range" min="1" max ="100" value="50" oninput="updateValue(valueLuminosite.id, this.value)" style="width: 100%;"><br><br>
                 </div>
             </div>
         </div>

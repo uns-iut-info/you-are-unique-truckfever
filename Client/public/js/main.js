@@ -9,6 +9,7 @@ let pausefired = false;
 let nbWall = 0;
 let cursorPlayer;
 let music;
+let volume = 0.1;
 let bonus = [];
 let gameWantReady = true ;
 let bonusPos = [];
@@ -102,6 +103,13 @@ function startGame() {
     let alpha = 0;
     engine.runRenderLoop(() => {
         currentDate = Date.now();
+
+        // Volume
+        let newVolume = $("#volume").value / 100;
+        if (newVolume != volume) {
+            BABYLON.Engine.audioEngine.setGlobalVolume(newVolume);
+        }
+
         // SI LE JEU DEMANDE D'ÊTRE PRET
         if(gameWantReady){
             let deltaTime = engine.getDeltaTime(); 
@@ -244,7 +252,7 @@ function createScene() {
     music = new BABYLON.Sound("Music", "/assets/musique/Background.wav", scene, null, {
         loop: true,
         autoplay: true,
-        volume : 0.1
+        volume : volume
     });
     let camera = createFreeCamera(scene);
     for(let i = 0 ; i < 5 ; i++){
