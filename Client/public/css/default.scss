@@ -18,6 +18,55 @@ html, body {
     
 }
 
+#chatMessages {
+  position: fixed;
+  top: 10px;
+  right: 200px;
+  width:300px;
+  height:120px;
+  padding:20px;
+  color : white;
+  background: rgba(50, 46, 104, 0.082);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  display: none;
+}
+#conversation{
+  width: 300px;
+  height: 120px;
+  overflow-y:scroll;
+  
+  overflow-wrap: break-word;
+  
+}
+.conatinerSendMSG{
+  padding-top: 5px;
+  position: absolute;
+  bottom: -25px;
+  left:0px;
+  width: 340px;
+  height: 25px;
+  background-color:rgba(100, 100, 100, 0.774);
+  border-radius: 13px;
+}
+input:focus, textarea:focus, select:focus{
+  outline: none;
+}
+.data{
+  border: none;
+  color: white;
+  background-color: transparent;
+  width: 250px;
+  margin-left: 20px;
+}
+.datasend{
+  cursor: pointer;
+  width: 50px;
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
 #Settings1{
   margin-top: 50px;
   width: 150px;
@@ -65,20 +114,6 @@ html, body {
   border-radius: 15px;
 }
 
-#chatMessages {
-    position: fixed;
-    top: 10px;
-    right: 150px;
-    width:300px;
-    height:100px;
-    padding:30px;
-    color : white;
-    background: rgba(50, 46, 104, 0.082);
-    backdrop-filter: blur(5px);
-    border-radius: 15px;
-    overflow-y:auto;
-    display: none;
-}
 
 #FILTRE{
     width: 100%;
@@ -136,7 +171,7 @@ html, body {
     margin-left: auto;
     margin-right: auto;
     width: 200px;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-bottom: -100px;
   }
 .lobbyCell{
@@ -197,9 +232,9 @@ button:hover{
 }
 .containerHOME{
     background-color: blue;
-    margin-top: 200px;
+    margin-top: 150px;
     width: 600px;
-    height: 600px;
+    height: 700px;
     margin-left: auto;
     margin-right: auto;
     background: rgba(255, 255, 255, 0.02);
@@ -211,10 +246,11 @@ border-radius: 30px;
 .input{
     border : none;
     /* Note: backdrop-filter has minimal browser support */
-    width: 80%;
+    width: 500px;
     margin-top: 50px;
-    margin-left: 10%;
-    padding: 50px;
+    margin-left: 50px;
+    height: 50px;
+    padding: 40px;
     background: rgba(196, 196, 196, 0.08);
     border-radius: 13px;
     color:#ffffff;

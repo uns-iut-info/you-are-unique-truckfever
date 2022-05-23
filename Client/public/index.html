@@ -13,26 +13,27 @@
     <body>
         <div class="titleHOME"><h1> STAR FEVER </h1></div>
         <div class="containerHOME">
+            <input class="input" type="text" id="username" name="name" placeholder="PSEUDO" required size="10">
             <br/>
             <div id="cell0" class="lobbyCell">
                 <div class="lobbyName">Lobby 0 </div>
                 <div id="count0" class="lobbyCounter"></div>
-                <a href="/game.html?lobby=0"><button id="" class="Join">Rejoindre</button></a>
+                <button id="" onclick="goToLobby(0);" class="Join">Rejoindre</button>
             </div>
             <div id="cell1" class="lobbyCell">
                 <div class="lobbyName">Lobby 1 </div>
                 <div id="count1" class="lobbyCounter"></div>
-                <a href="/game.html?lobby=1"><button id="" class="Join">Rejoindre</button></a>
+                <button id="" onclick="goToLobby(1);"class="Join">Rejoindre</button>
             </div>
             <div id="cell2" class="lobbyCell">
                 <div  class="lobbyName">Lobby 2 </div>
                 <div id="count2" class="lobbyCounter"></div>
-                <a href="/game.html?lobby=2"><button id="" class="Join">Rejoindre</button></a>
+                <button id="" onclick="goToLobby(2);"class="Join">Rejoindre</button>
             </div>
             <div id="cell3" class="lobbyCell">
                 <div class="lobbyName">Lobby 3 </div>
                 <div id="count3" class="lobbyCounter"></div>
-                <a href="/game.html?lobby=3"><button id="" class="Join">Rejoindre</button></a>
+                <button id="" onclick="goToLobby(3);"class="Join">Rejoindre</button>
             </div>
             <button class="boutonRefreshList" onclick="refreshLobbyCounter();">Actualiser</button>
         </div>

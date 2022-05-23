@@ -1,10 +1,10 @@
 let username;
-let displayPlanets;
-let displayStars;
-let displayTransparency;
-let displayEffects;
-let displayParticles;
-let mobile;
+let displayPlanets =true;
+let displayStars=true;
+let displayTransparency=true;
+let displayEffects=true;
+let displayParticles=true;
+let mobile=true;
 let conversation, data, datasend, users;
 let fullScreen = false;
 let artificialLatencyDelay = 10;
@@ -70,11 +70,12 @@ $("#buttonOption").on("click", () => {
 });
 
 
+window.onload = ()=>{
+  init();
+}
 
 
-
-function getUsername(){
-  username = document.getElementById("username").value;
+function play(){
   mobile = document.getElementById("mobile").checked;
   displayPlanets = document.getElementById("planets").checked;
   displayStars = document.getElementById("stars").checked;
@@ -82,11 +83,15 @@ function getUsername(){
   displayEffects = document.getElementById("effects").checked;
   displayParticles = document.getElementById("particles").checked;
   //console.log(displayPlanets,displayStars,displayTransparency,displayEffects)
-  if(username==""){
-    alert("Veuillez entrer un pseudo :) !");
-  }else{
-    init();
-  }
+  document.getElementById("HOME").style.display = "none";
+  document.getElementById("userList").style.display = "block";
+  document.getElementById("LOADING").style.display = "block";
+  document.getElementById("READY").style.display = "none";
+  document.getElementById("WAITING").style.display = "none";
+  document.getElementById("GAME").style.display = "none";
+  document.getElementById("left").style.display = "none";
+  document.getElementById("right").style.display = "none";
+  
 }
 
 function init() {
@@ -95,11 +100,14 @@ function init() {
   const search = window.location.search; // returns the URL query String
   const params = new URLSearchParams(search);
   let lobby = params.get('lobby'); 
+  username =  params.get('username')
+
   socket = io.connect('https://server-star-fever.herokuapp.com/lobby'+lobby, { transports: ['websocket'], upgrade:false });
+
   conversation = document.querySelector("#conversation");
   data = document.querySelector("#data");
   datasend = document.querySelector("#datasend");
-  users = document.querySelector("#users");
+  users = document.getElementById("users");
 
  // Listener for send button
  datasend.onclick = (evt) => {
@@ -120,8 +128,11 @@ data.onkeypress = (evt) => {
 function sendMessage() {
   let message = data.value;
   data.value = "";
+  if(message !== ""){
+    socket.emit("sendchat", message);
+  }
   // tell server to execute 'sendchat' and send along one parameter
-  socket.emit("sendchat", message);
+  
 }
   
   // on connection to server, ask for user's name with an anonymous callback
@@ -137,6 +148,7 @@ function sendMessage() {
   // update the whole list of players, useful when a player
   // connects or disconnects, we must update the whole list
   socket.on("updatePlayers", (newPlayer) => {
+    console.log(newPlayer)
      updatePlayers(newPlayer);
   });
 
@@ -154,14 +166,23 @@ function sendMessage() {
   socket.on("updatechat", (username, data) => {
     let chatMessage = "<b>" + username + ":</b> " + data + "<br>";
     conversation.innerHTML += chatMessage;
+    conversation.scrollTop = conversation.scrollHeight;
   });
 
+  let colors = ["red","green","blue","yellow"]
   // listener, whenever the server emits 'updateusers', this updates the username list
   socket.on("updateusers", (listOfUsers) => {
     users.innerHTML = "";
-    for (let name in listOfUsers) {
-      let userLineOfHTML = "<div>" + name + "</div>";
-      users.innerHTML += userLineOfHTML;
+    console.log(listOfUsers)
+    acc= 0;
+    
+    for ( let name in listOfUsers ) {
+      let color = colors[acc];
+      let userLineOfHTML = document.createElement("div")
+      userLineOfHTML.innerHTML = name
+      userLineOfHTML.style.color = color;
+      users.appendChild(userLineOfHTML)
+      acc++
     }
   });
 
@@ -190,14 +211,6 @@ function sendMessage() {
   // instanciation de la partie
   socket.on("startGame",(name) =>{
     if(username == name){
-      document.getElementById("HOME").style.display = "none";
-      document.getElementById("userList").style.display = "block";
-      document.getElementById("LOADING").style.display = "block";
-      document.getElementById("READY").style.display = "none";
-      document.getElementById("WAITING").style.display = "none";
-      document.getElementById("GAME").style.display = "none";
-      document.getElementById("left").style.display = "none";
-      document.getElementById("right").style.display = "none";
       startGame();
     }
   });

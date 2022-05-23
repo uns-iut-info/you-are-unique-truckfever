@@ -106,7 +106,7 @@ const setIOserver = async (lobby) => {
 		// when the client emits 'sendchat', this listens and executes
 		socket.on('sendchat', (data) => {
 			// we tell the client to execute 'updatechat' with 2 parameters
-			ioLobby.sockets.emit('updatechat', socket.username, data);
+			ioLobby.emit('updatechat', socket.username, data);
 		});
 	
 	
