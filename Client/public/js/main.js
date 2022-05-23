@@ -587,10 +587,12 @@ function updateWall(newWall){
         tron =  createTron(scene,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
     }else{
         //console.log("new ennemi : ",newPlayer)
-        tron = scene.getMeshByName("tron");
-        resetTron(tron,true);
-        
+        try{
+            tron = scene.getMeshByName("tron");
+            resetTron(tron,true);
+        }catch{
 
+        }
         createEnemie(scene,newPlayer.username,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
         listEnemis.push(newPlayer.username)
     }
