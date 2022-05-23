@@ -105,7 +105,7 @@ function startGame() {
         currentDate = Date.now();
 
         // Volume
-        let newVolume = $("#volume").value / 100;
+        let newVolume = document.getElementById("volume").value / 100;
         if (newVolume != volume) {
             BABYLON.Engine.audioEngine.setGlobalVolume(newVolume);
         }
@@ -252,7 +252,7 @@ function createScene() {
     music = new BABYLON.Sound("Music", "/assets/musique/Background.wav", scene, null, {
         loop: true,
         autoplay: true,
-        volume : volume
+        volume : 0.1
     });
     let camera = createFreeCamera(scene);
     for(let i = 0 ; i < 5 ; i++){

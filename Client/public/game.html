@@ -131,8 +131,8 @@
                         <tr><td>Sauter</td><td><img src="/assets/images/touches/touche_espace.png" width="50px"></td></tr>
                     </table>
                 </div>
-                <div id="divOption" style="margin: 3% 4% 1% 4%; font-size: large; font-family: Arial; display: none;">
-                    Volume : <span id="valueVolume">50</span> %<br><input id="volume" type="range" min="0" max="100" value="50" oninput="updateValue(valueVolume.id, this.value)" style="width: 100%;"><br><br>
+                <div id="divOption" style="margin: 3% 4% 1% 4%; font-size: large; font-family: Arial; display: none;"><br>
+                    Volume : <span id="valueVolume">50</span> %<br><input id="volume" type="range" min="0" max="100" value="50" onchange="updateValue('valueVolume', this.value)" style="width: 100%;"><br><br>
                 </div>
             </div>
         </div>

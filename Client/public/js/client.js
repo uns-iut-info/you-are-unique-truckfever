@@ -69,6 +69,10 @@ $("#buttonOption").on("click", () => {
   $("#divOption").css('display', 'block');
 });
 
+function updateValue(id, value) {
+  document.getElementById(id).innerHTML = value;
+}
+
 
 window.onload = ()=>{
   init();
