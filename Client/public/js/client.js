@@ -55,7 +55,7 @@ $("#closeButtonSettings").on("click", () => {
   $("#settingsPanel").css('display', 'none');
 });
 $("#buttonControle").on("click", () => {
-  $("#buttonControle").css('color', '#158EC6');
+  $("#buttonControle").css('color', '#A3ACB7');
   $("#buttonOption").css('color', '#E9E4C6');
   $("#buttonSelected").css('float', 'none');
   $("#divControle").css('display', 'block');
@@ -64,7 +64,7 @@ $("#buttonControle").on("click", () => {
 $("#buttonOption").on("click", () => { 
   $("#buttonControle").css('color', '#E9E4C6');
   $("#buttonSelected").css('float', 'right');
-  $("#buttonOption").css('color', '#158EC6');
+  $("#buttonOption").css('color', '#A3ACB7');
   $("#divControle").css('display', 'none');
   $("#divOption").css('display', 'block');
 });
