@@ -20,6 +20,6 @@ function refreshLobbyCounter(){
 function goToLobby(lobby){
     var name = document.getElementById("username").value
     if(name.length >= 1 && !(document.getElementById("count"+(lobby)).innerHTML).includes("4/4") ){
-        window.location.href = "/game?lobby="+lobby+"&username="+name.replace(/"/g,"").replace(/'/g,"").replace(/&/g,"").replace(/>/g,"").replace(/</g,"").replace(/ /g,"").replace(/[0-9]/g,"")
+        window.location.href = "/game?lobby="+lobby+"&username="+name.replace(/"/g,"").replace(/'/g,"").replace(/&/g,"").replace(/>/g,"").replace(/</g,"").replace(/ /g,"").replace(/[0-9]/g,"")+"%23"+(Date.now()%10000).toString()
     }
 }
