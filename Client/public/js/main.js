@@ -9,6 +9,7 @@ let pausefired = false;
 let nbWall = 0;
 let cursorPlayer;
 let music;
+let volume = 0.1;
 let bonus = [];
 let gameWantReady = true ;
 let bonusPos = [];
@@ -16,7 +17,7 @@ let missileCast = false ;
 let missiles;
 let escapeReleased = true;
 let tron;
-let listEnemis = [];
+let listEnemis = ["","","",""];
 let listUsernameEnemis = [];
 let currentDate;
 let accu = 0;
@@ -42,13 +43,11 @@ inputStates.escape = false;
 
 
 function LEFTClick(){
-    accu--;
-    tronDead()
+    tronDead(false)
 }
 
 function RIGHTClick(){
-    accu++;
-    tronDead()
+    tronDead(true)
 }
 
 
@@ -102,6 +101,13 @@ function startGame() {
     let alpha = 0;
     engine.runRenderLoop(() => {
         currentDate = Date.now();
+
+        // Volume
+        let newVolume = document.getElementById("volume").value / 100;
+        if (newVolume != volume) {
+            BABYLON.Engine.audioEngine.setGlobalVolume(newVolume);
+        }
+
         // SI LE JEU DEMANDE D'ÊTRE PRET
         if(gameWantReady){
             let deltaTime = engine.getDeltaTime(); 
@@ -149,13 +155,17 @@ function startGame() {
                     missiles.move(deltaTime);
                 }
                 // MOUVEMENT TRON
-                tron.move(deltaTime,inputStates,walls,bonus); 
+                if(tron.inGame){
+                    tron.move(deltaTime,inputStates,walls,bonus); 
+                    moveCursor(tron);
+                }
+                
                 /*listEnemis.forEach((user) => {
                     let meshEnemy = scene.getMeshByName(user);
                     meshEnemy.move2(deltaTime)
                 })*/
                 // MOUVEMENT CURSEUR   
-                moveCursor(tron);
+                
 
                 lastDateMove=currentDate;
                 // SI IL Y EN A, BOUGE LES PLANETES 
@@ -163,7 +173,10 @@ function startGame() {
                     alpha += 0.001;
                 // CREER UN MUR AU MOINS TOUTE LES 300ms
                 if(currentDate-lastDateWall > 600){
-                    tron.wall(scene,inputStates);
+                    if(tron.inGame){
+                        tron.wall(scene,inputStates);
+                    }
+                    
                     lastDateWall=currentDate;
                     printFPS(deltaTime);            
                 }
@@ -179,24 +192,32 @@ function startGame() {
     });
 }
 
-function tronDead(){
-    
-    if(listEnemis.length>0){
-        console.log(listEnemis[(accu)%listEnemis.length], listEnemis , accu )
-        let enemi = scene.getMeshByName(listEnemis[(accu)%listEnemis.length]);
-        let newfollowCamera =  createFollowCamera(scene,enemi);
-        console.log(scene.activeCameras)
-        scene.activeCameras.splice(1,1,newfollowCamera);
-        newfollowCamera.layerMask = 2;
+function tronDead(forward){
+    let test = 0
+    while(listEnemis[(accu)%4]==="" ){
+        if(test > 8 ){
+            return
+        }
+        test++
+        if(forward){
+            accu++
+        }else{
+            accu--
+        }
     }
+    document.getElementById("announce").innerHTML = "Watching "+ listEnemis[(accu)%4]
+    let enemi = scene.getMeshByName(listEnemis[(accu)%4]);
+    let newfollowCamera =  createFollowCamera(scene,enemi);
+    scene.activeCameras.splice(1,1,newfollowCamera);
+    newfollowCamera.layerMask = 2;
     
-     
 }
 // AFFICHE LA PAGE READY 
 function askReady(){
     document.getElementById("HOME").style.display = "none";
     document.getElementById("LOADING").style.display = "none";
     document.getElementById("READY").style.display = "block";
+    document.getElementById("announce").innerHTML = "";
     document.getElementById("WAITING").style.display = "none";
     document.getElementById("GAME").style.display = "none";
     document.getElementById("left").style.display = "none";
@@ -216,7 +237,6 @@ function ready(){
     document.getElementById("right").style.display = "none";
     let tron = scene.getMeshByName("tron");
     let newfollowCamera =  createFollowCamera(scene,tron );
-        console.log(scene.activeCameras)
         newfollowCamera.layerMask = 2;
         try {
             scene.activeCameras.splice(1,1,newfollowCamera);
@@ -272,7 +292,7 @@ function reset(){
 }
 
 // CONSTRUIT UN NOUVEAU MUR (VENANT SOIT DU JOUEUR SOIT D'UN AUTRE) 
-function createWall(scene, fromX, fromZ, toX, toZ, mine, color){
+function createWall(scene, fromX, fromZ, toX, toZ, color,usernameWall){
     // calcul de la longueur du mur
     let diffX = toX-fromX;
     let diffZ = toZ-fromZ;
@@ -284,16 +304,36 @@ function createWall(scene, fromX, fromZ, toX, toZ, mine, color){
         angle = -angle;
     }
     // crée le mur 
-    let wall = BABYLON.MeshBuilder.CreateBox(toString(nbWall), { width:longueur, height:5, size : 2}, scene);
+    let wall = BABYLON.MeshBuilder.CreateBox(usernameWall+nbWall.toString(), { width:longueur, height:5, size : 2}, scene);
     wall.position = new BABYLON.Vector3(fromX+(diffX / 2)  , 2, fromZ +(diffZ / 2)); 
     wall.rotation.y = angle;
     if(displayTransparency){ wall.visibility = 0.5;}
     let WallMaterial = new BABYLON.StandardMaterial("wallMaterial", scene);
     WallMaterial.diffuseColor  = new BABYLON.Color3(colorList[color].r,colorList[color].g,colorList[color].b);
     wall.material = WallMaterial
-    walls[nbWall] = wall;
+    walls.push(wall);
     // si le mur est celui du joueur alors il envoie les datas du mur au serveur  
-    if(mine) {send("wall",{'username':username,'fromX' : fromX,'fromZ':fromZ, 'toX' : toX,'toZ' : toZ , 'color' : color});}
+    send("wall",{'username':username,'fromX' : fromX,'fromZ':fromZ, 'toX' : toX,'toZ' : toZ , 'color' : color,"name":usernameWall+nbWall.toString()});
+}
+function createWallEnnemy(scene, fromX, fromZ, toX, toZ, color,usernameWall){
+    // calcul de la longueur du mur
+    let diffX = toX-fromX;
+    let diffZ = toZ-fromZ;
+    let longueur = Math.pow((Math.pow(diffX,2) + Math.pow(diffZ,2)),0.5);
+    // calcul de la rotation du mur
+    let angle = Math.acos(diffX/longueur);
+    if(diffZ > 0 ){
+        angle = -angle;
+    }
+    let wall = BABYLON.MeshBuilder.CreateBox(usernameWall, { width:longueur, height:5, size : 2}, scene);
+    console.log(usernameWall)
+    wall.position = new BABYLON.Vector3(fromX+(diffX / 2)  , 2, fromZ +(diffZ / 2)); 
+    wall.rotation.y = angle;
+    if(displayTransparency){ wall.visibility = 0.5;}
+    let WallMaterial = new BABYLON.StandardMaterial("wallMaterial", scene);
+    WallMaterial.diffuseColor  = new BABYLON.Color3(colorList[color].r,colorList[color].g,colorList[color].b);
+    wall.material = WallMaterial
+    walls.push(wall); 
 }
 
 // crée un missile pour détruire les murs 
@@ -330,6 +370,7 @@ function destructWall(){
         if(walls[i]!=undefined){
             if(missiles.intersectsMesh(walls[i],true)){
                 walls[i].dispose();
+                send("wallDestruct",{'username':username,"name":walls[i].name});
                 walls[i] = undefined ;
                 return;
             }
@@ -558,24 +599,44 @@ function printTIMEOUT(timeleft){
 // ajout d'un mur 
 function updateWall(newWall){
     if(newWall.username != username){
-        createWall(scene,newWall.fromX,newWall.fromZ,newWall.toX , newWall.toZ, false,newWall.color);
+        createWallEnnemy(scene,newWall.fromX,newWall.fromZ,newWall.toX , newWall.toZ,newWall.color,newWall.name);
     }
 }
-
+function destroyWallEnnemi(wallName){
+    let wall = scene.getMeshByName(wallName);
+    console.log("LA MEESH ",wall,"MUR A DETRUIRE " ,wallName)
+    let idWall = walls.indexOf(wall)
+    console.log("ID A DETRUIRE " ,idWall)
+    wall.dispose()
+    walls[idWall] = undefined
+    
+    
+}
 // bouge un joueur ennemi
  function updatePlayerNewPos(newPos){
+    
     if(listEnemis.includes(newPos.username)){
         //console.log(newPos)
         let meshEnemy = scene.getMeshByName(newPos.username);
-        meshEnemy.move(newPos.x,newPos.y,newPos.z,newPos.orientation)
-    }else if(username!=newPos.username){
+        meshEnemy.move(newPos.x,newPos.y,newPos.z,newPos.rotationx,newPos.rotationy,newPos.rotationz)
+    }else if(username!=newPos.username ){
+        console.log('1111 appel updatePlayers avec :', newPos)
          updatePlayers(newPos);
     }
 }
 
 // crée un tron (soit celui du joueur soit celui d'un ennemis)
  function updatePlayers(newPlayer){
-    if(newPlayer.username == username){
+    if(newPlayer.username == username || newPlayer.name == username ){
+        console.log("LAAAAA&&&&&" ,newPlayer)
+        try{
+            console.log("je mee delete")
+            let me = scene.getMeshByName("tron");
+            me.dispose();
+            console.log("je mee ssuis deeleete")
+        }catch{
+
+        }
         tron =  createTron(scene,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
     }else{
         //console.log("new ennemi : ",newPlayer)
@@ -585,8 +646,15 @@ function updateWall(newWall){
         }catch{
 
         }
+        console.log("LAAAAA" ,newPlayer)
+        try{
+            let him = scene.getMeshByName(newPlayer.username);
+            him.dispose();
+        }catch{
+
+        }
         createEnemie(scene,newPlayer.username,newPlayer.x,newPlayer.y,newPlayer.z,newPlayer.orientation,newPlayer.color);
-        listEnemis.push(newPlayer.username)
+        listEnemis[newPlayer.color] = newPlayer.username;
     }
 }
 
@@ -629,10 +697,8 @@ function starting(start){
     document.getElementById("READY").style.display = "none";
     document.getElementById("WAITING").style.display = "none";
     document.getElementById("GAME").style.display = "block";
-    if(mobile){
-        document.getElementById("left").style.display = "block";
-        document.getElementById("right").style.display = "block";
-    }
+    document.getElementById("left").style.display = "none";
+    document.getElementById("right").style.display = "none";
     gameWantReady = false ;
     let tron = scene.getMeshByName("tron");
     if(tron){
@@ -644,6 +710,10 @@ function starting(start){
 // supprime un enemis si il se déconnecte
 function deleteTron(name){
     let enemis = scene.getMeshByName(name);
-    enemis.dispose();
-    delete listEnemis[name];
+    try{
+        enemis.dispose();
+    }catch{
+
+    }
+    listEnemis[listEnemis.indexOf(name)] = "";
 }

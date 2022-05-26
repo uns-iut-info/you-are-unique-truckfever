@@ -69,6 +69,9 @@ $("#buttonOption").on("click", () => {
   $("#divOption").css('display', 'block');
 });
 
+function updateValue(id, value) {
+  document.getElementById(id).innerHTML = value;
+}
 
 window.onload = ()=>{
   init();
@@ -148,9 +151,25 @@ function sendMessage() {
   // update the whole list of players, useful when a player
   // connects or disconnects, we must update the whole list
   socket.on("updatePlayers", (newPlayer) => {
-    console.log(newPlayer)
+    console.log('2222 appel updatePlayers avec :', newPlayer)
      updatePlayers(newPlayer);
   });
+  socket.on("updatePlayersAfterDead", (newPlayer) => {
+    console.log('33 recu avec :', newPlayer)
+    for(player in newPlayer){
+      console.log('3333 appel updatePlayers avec :', newPlayer[player])
+      updatePlayers(newPlayer[player]);
+    } 
+   
+  });
+  socket.on("destructWall", (usernameWall,wallName) => {
+    console.log(wallName)
+    if(usernameWall!==username){
+      destroyWallEnnemi(wallName);
+    }
+    
+  });
+
 
   // un mur est a construire
   socket.on("updateWall", (wall) => {
@@ -159,7 +178,7 @@ function sendMessage() {
 
   // supprimer un tron car déconnexion d'un joueur
   socket.on("disposeTron", (data) =>{
-    deleteTron(data.username);
+    deleteTron(data);
   });
 
   // listener, whenever the server emits 'updatechat', this updates the chat body
@@ -174,15 +193,16 @@ function sendMessage() {
   socket.on("updateusers", (listOfUsers) => {
     users.innerHTML = "";
     console.log(listOfUsers)
-    acc= 0;
     
-    for ( let name in listOfUsers ) {
-      let color = colors[acc];
-      let userLineOfHTML = document.createElement("div")
-      userLineOfHTML.innerHTML = name
-      userLineOfHTML.style.color = color;
-      users.appendChild(userLineOfHTML)
-      acc++
+    for( let id = 0 ; id<4;id++ ) {
+      if(listOfUsers[id] !== ""){
+        let color = colors[id];
+        let userLineOfHTML = document.createElement("div")
+        userLineOfHTML.innerHTML = listOfUsers[id]
+        userLineOfHTML.style.color = color;
+        users.appendChild(userLineOfHTML)
+      }
+     
     }
   });
 

@@ -2,21 +2,22 @@ let playersPosStart = [{'x' : 190, 'z' :0, 'orientation' : -Math.PI/2,'color':0}
 let nbLobby =  4 ;
 class Player {
     constructor(id, name) {
-        this.x = playersPosStart[id%4].x;
+        this.x = playersPosStart[id].x;
         this.y = 3;
-		this.z = playersPosStart[id%4].z;
-		this.orientation = playersPosStart[id%4].orientation;
+		this.z = playersPosStart[id].z;
+		this.orientation = playersPosStart[id].orientation;
 		this.id = id;
-        this.name = name;
+        this.username = name;
 		this.points = 0;
-		this.color = playersPosStart[id%4].color;
+		this.color = playersPosStart[id].color;
     }
 }
 var playerByLobby =[]
 const setIOserver = async (lobby) => {
 	const ioLobby = io.of("/lobby"+lobby)
 	// Datas du serveur pour la gestion de la partie et des connexions 
-	let playerNames = {};
+	let playerNames = ["","","",""];
+	let slot0,slot1,slot2,slot3 = false;
 	let numbPlayer = 0;
 	let nbPlayerConnected = 0;
 	let listOfPlayers = {};
@@ -38,7 +39,7 @@ const setIOserver = async (lobby) => {
 	ioLobby.on('connection', (socket) => {
 		// RECUPERE LES POSITIONS ET LES REENVOIS AUX JOUEURS
 		socket.on('sendpos', (data) => {
-			ioLobby.emit('updatePos', {"username" : data.username , 'x':data.x , 'y' : data.y , 'z':data.z,'orientation' : data.orientation,'color' : data.color });
+			ioLobby.emit('updatePos', {"username" : data.username , 'x':data.x , 'y' : data.y , 'z':data.z,'rotationx' : data.rotationx, 'rotationy' : data.rotationy,'rotationz' : data.rotationz,'color' : data.color });
 		});
 	
 		// RECUPERE UN MUR ET LE REENVOI AUX JOUEURS
@@ -55,25 +56,49 @@ const setIOserver = async (lobby) => {
 	
 		// AJOUTE UN JOUEUR ET ENVOIS SES DATAS AUX AUTRES CLIENTS
 		socket.on('adduser', (username) => {
-			socket.username = username;
-			playerNames[username] = username;
-			console.log(lobby + ': ', socket.username ,' has connected !')
-			ioLobby.emit('updateusers', playerNames);
-			socket.emit('updatechat', 'SERVER', 'you have connected');
-			socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
-			let player = new Player(numbPlayer,username);
-			numbPlayer += 1;
+			if(nbPlayerConnected<4){
+				socket.username = username;
+				console.log(lobby + ': ', socket.username ,' has connected !')
+				
+				socket.emit('updatechat', 'SERVER', 'you have connected');
+				socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
+				let player;
+				if(!slot0){
+					player = new Player(0,username);
+					playerNames[0] = username;
+					ioLobby.emit('updateusers', playerNames);
+					slot0 = true
+				}else if(!slot1){
+					player = new Player(1,username);
+					playerNames[1] = username;
+					ioLobby.emit('updateusers', playerNames);
+					slot1 = true
+				}else if(!slot2){
+					player = new Player(2,username);
+					playerNames[2] = username;
+					ioLobby.emit('updateusers', playerNames);
+					slot2 = true
+				}else if(!slot3){
+					player = new Player(3,username);
+					playerNames[3] = username;
+					ioLobby.emit('updateusers', playerNames);
+					slot3 = true
+				}
+				
+				nbPlayerConnected ++;
+				playerByLobby[lobby] = nbPlayerConnected
+				listOfPlayers[username] = player;
+				createAllBonus();
+				ioLobby.emit('startGame',username);
+				console.log(lobby + ': ', 'Asking to get Ready to players !')
+				playersReady=0;
+				ioLobby.emit('getReady',);
+				gameRestarting = true;
+				ioLobby.emit('updatePlayers',{'username' : username , 'x' : player.x,'y' : player.y,'z' : player.z ,'orientation' : player.orientation,'color' : player.color, "id" : player.id});
+			}else{
+				socket.emit('refused', 'SERVER', 'you have connected');
+			}
 			
-			nbPlayerConnected ++;
-			playerByLobby[lobby] = nbPlayerConnected
-			listOfPlayers[username] = player;
-			createAllBonus();
-			ioLobby.emit('startGame',username);
-			console.log(lobby + ': ', 'Asking to get Ready to players !')
-			playersReady=0;
-			ioLobby.emit('getReady',);
-			gameRestarting = true;
-			ioLobby.emit('updatePlayers',{'username' : username , 'x' : player.x,'y' : player.y,'z' : player.z ,'orientation' : player.orientation,'color' : player.color});
 		});
 	
 		// UN JOUEUR EST READY
@@ -108,22 +133,47 @@ const setIOserver = async (lobby) => {
 			// we tell the client to execute 'updatechat' with 2 parameters
 			ioLobby.emit('updatechat', socket.username, data);
 		});
-	
-	
+		socket.on('wallDestruct', (data) => {
+			
+			ioLobby.emit('destructWall',socket.username, data.name);
+		});
+		
 		// when the user disconnects.. perform this
 		socket.on('disconnect', () => {
+			let id= playerNames.indexOf(socket.username)
 			// remove the username from global usernames list
-			delete playerNames[socket.username];
+			if(id === 0){
+				slot0 = false
+				playerNames[0] = "";
+			}else if(id === 1){
+				slot1= false
+				playerNames[1] = "";
+			}else if(id === 2){
+				slot2 = false
+				playerNames[2] = "";
+			}else if(id === 3){
+				slot3 = false
+				playerNames[3] = "";
+			}
 			console.log(lobby + ': ', socket.username ,' has disconnected !')
 			gameRestarting = true;
 			// update list of users in chat, client-side
 			ioLobby.emit('updateusers', playerNames);	
 			ioLobby.emit('disposeTron', socket.username);
-			nbPlayerConnected-- ;
+			nbPlayerConnected = 0
+			if(slot0){
+				nbPlayerConnected++
+			}else if(slot1){
+				nbPlayerConnected++
+			}else if(slot2){
+				nbPlayerConnected++
+			}else if(slot3){
+				nbPlayerConnected++
+			}
 			playerByLobby[lobby] = nbPlayerConnected
 			// Remove the player too
 			delete listOfPlayers[socket.username];		
-			ioLobby.emit('updatePlayers',listOfPlayers);
+			ioLobby.emit('updatePlayersAfterDead',listOfPlayers);
 			if(nbPlayerConnected>0){
 				playersReady=0;
 				playerInGame=0;

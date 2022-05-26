@@ -74,13 +74,14 @@ function createTron(scene,x,y,z,orientation,color) {
 
             // pour la construction des murs 
             tron.wall = (scene,inputs) => {
-                if(!tron.jumping && !tron.loose){
+                if(!tron.inGame){
+                    
+                }else if(!tron.jumping && !tron.loose){
                     let newPos = new BABYLON.Vector3(tron.position.x-4*tron.frontVector.x, tron.position.y, tron.position.z-4*tron.frontVector.z);
                     tron.nbWall +=1 ;
-                    createWall(scene, tron.lastPos.x, tron.lastPos.z , newPos.x, newPos.z,true,tron.color);
+                    createWall(scene, tron.lastPos.x, tron.lastPos.z , newPos.x, newPos.z,tron.color,username);
                     tron.lastPos = newPos;
                 }else{
-                    tron.loose = false;
                     tron.lastPos = new BABYLON.Vector3(tron.position.x, tron.position.y, tron.position.z);
                 }
                 
@@ -89,7 +90,6 @@ function createTron(scene,x,y,z,orientation,color) {
 
             // mouvement du tron en fonction de plusieurs facteur, gère également les collisions avec les autres murs
             tron.move = (deltaTime,inputs,walls,bonus) => {
-                if(tron.inGame){
                     let currentDate = Date.now();
                     // si le saut n'est pas disponible
                     if(!tron.jumpAvailable ){
@@ -115,7 +115,7 @@ function createTron(scene,x,y,z,orientation,color) {
                     }
 
                     // si le brake est indisponible
-                    if(tron.inGame){
+                    
                         if(!tron.brakeAvailable){
                                 let timeElapsedBrake = currentDate - tron.brakeTimer ;
                                 if(tron.braking && ( timeElapsedBrake > 2000)){
@@ -137,7 +137,7 @@ function createTron(scene,x,y,z,orientation,color) {
                                 tron.brakeTimer = currentDate;
                             }
                         }
-                    }
+                    
                     // missile indiponible
                     if(!tron.missileAvailable ){
                         let timeElapsedFire = currentDate - tron.missileTimer ;
@@ -218,9 +218,9 @@ function createTron(scene,x,y,z,orientation,color) {
                         }
                     }
                 
-                }
+                
                 // envoie au serveur la position 
-                let data = {'username':username,'x' : tron.position.x, 'y' : tron.position.y , 'z' : tron.position.z, 'orientation' : tron.rotation.y,"color":tron.color}
+                let data = {'username':username,'x' : tron.position.x, 'y' : tron.position.y , 'z' : tron.position.z, 'rotationx' : tron.rotation.x, 'rotationy' : tron.rotation.y,'rotationz' : tron.rotation.z,"color":tron.color}
                 send("sendpos",data);
             }
             // si le client à choisit d'afficher les particules
@@ -290,7 +290,7 @@ function resetTron(tron,reseting){
     tron.speed = tron.basedSpeed;
     tron.frontVector = new BABYLON.Vector3(Math.sin(tron.baseRotationY), 0, Math.cos(tron.baseRotationY));
 
-    tron.loose = true ;
+    tron.loose = false ;
     tron.nbWall=0;
     if(tron.highScore < tron.score){
         tron.highScore = tron.score;
@@ -326,7 +326,9 @@ function stopTron(tron){
         tron.loose = true;
         tron.inGame = false ;
         tron.position = new BABYLON.Vector3(0,50,0);
-        tronDead();
+        document.getElementById("left").style.display = "block";
+        document.getElementById("right").style.display = "block";
+        tronDead(true);
         tron.speed = 0 ;
     }
 }
