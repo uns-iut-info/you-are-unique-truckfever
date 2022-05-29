@@ -32,4 +32,4 @@ Le jeu est disponible sur heroku [ici](https://starfever.herokuapp.com/).
 
 
 ## Démonstration
-[Démonstration du jeu]()
+[Démonstration du jeu](https://www.youtube.com/watch?v=fqH7kkUHXKo)
