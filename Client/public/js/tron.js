@@ -283,23 +283,29 @@ function createBonusAnimation(tron){
 
 // permet le reset de la game et des informations du tron 
 function resetTron(tron,reseting){
-    tron.inGame = true;
     tron.position = new BABYLON.Vector3(tron.x, tron.y, tron.z);
-    tron.rotation.y = tron.baseRotationY
-    tron.rotation.z = tron.baseRotationZ
+    tron.rotation.y = tron.baseRotationY;
+    tron.rotation.z = tron.baseRotationZ;
     tron.speed = tron.basedSpeed;
     tron.frontVector = new BABYLON.Vector3(Math.sin(tron.baseRotationY), 0, Math.cos(tron.baseRotationY));
 
-    tron.loose = false ;
-    tron.nbWall=0;
+    let newPos = new BABYLON.Vector3(tron.position.x-4*tron.frontVector.x, tron.position.y, tron.position.z-4*tron.frontVector.z);
+    tron.lastPos = newPos;
+
+    tron.loose = false;
+    tron.nbWall = 0;
     if(tron.highScore < tron.score){
         tron.highScore = tron.score;
     }
+
     if(tron.highBonus < tron.bonus){
         tron.highBonus = tron.bonus;
     }
-    tron.score = 0
-    tron.bonus = 0
+
+    tron.score = 0;
+    tron.bonus = 0;
+
+    tron.inGame = true;
     
     printBonus(0);
     printHScore(tron.highScore);
